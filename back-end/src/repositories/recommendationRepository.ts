@@ -43,6 +43,8 @@ function getFindAllFilter(
 }
 
 function find(id: number) {
+  console.log(id);
+  console.log(typeof(id))
   return prisma.recommendation.findUnique({
     where: { id },
   });

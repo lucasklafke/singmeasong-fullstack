@@ -16,6 +16,7 @@ async function insert(req: Request, res: Response) {
 
 async function upvote(req: Request, res: Response) {
   const { id } = req.params;
+  console.log(id)
 
   await recommendationService.upvote(+id);
 
@@ -24,7 +25,6 @@ async function upvote(req: Request, res: Response) {
 
 async function downvote(req: Request, res: Response) {
   const { id } = req.params;
-
   await recommendationService.downvote(+id);
 
   res.sendStatus(200);

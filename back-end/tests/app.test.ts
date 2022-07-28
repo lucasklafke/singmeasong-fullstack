@@ -2,7 +2,7 @@ import app from '../src/app.js';
 import supertest from 'supertest';
 import { faker } from '@faker-js/faker';
 import {prisma} from '../src/database.js';
-
+import { voteScenario } from './factories/scenarioFactory.js';
 
 beforeEach(async () => {
         await prisma.recommendation.deleteMany({})
@@ -25,6 +25,20 @@ describe("recommendations endpoint", () => {
                         name
                 });
                 expect(response.statusCode).toBe(422);
+        })
+
+        it("downvote, expect status 200", async () => {
+                const recommendation = await voteScenario()
+                const id = recommendation.id
+                const response = await supertest(app).post(`/recommendations/${id}/downvote`)
+                expect(response.statusCode).toBe(200);
+        })
+
+        it("upvote, expect status 200", async () => {
+                const recommendation = await voteScenario()
+                const id = recommendation.id
+                const response = await supertest(app).post(`/recommendations/${id}/upvote`)
+                expect(response.statusCode).toBe(200);
         })
 
 
