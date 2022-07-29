@@ -1,11 +1,11 @@
-import { faker } from "@faker-js/faker"
+// import { faker } from "@faker-js/faker"
 import {recommendationService} from "../../src/services/recommendationsService.js"
 import {recommendationRepository} from "../../src/repositories/recommendationRepository.js"
 describe("song tests", () => {
         jest.spyOn(recommendationRepository, "create").mockImplementation(():any => {})
         jest.spyOn(recommendationRepository, "findByName").mockImplementation(():any => {})
         it("should create a song", async () => {
-                const name = faker.lorem.word()
+                const name = "lucas"
                 const youtubeLink = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
                 await recommendationService.insert({name, youtubeLink})
@@ -121,7 +121,4 @@ describe("song tests", () => {
                         expect(err).toBeDefined()
                 }
         })
-
-        
-        
 })
