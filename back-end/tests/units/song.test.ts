@@ -51,6 +51,7 @@ describe("song tests", () => {
                 expect(recommendationRepository.updateScore).toBeCalled()
 
         })
+        
         it("should delete a song when downvote a song with score less than 5", async () => {
                 jest.spyOn(recommendationRepository, "remove").mockImplementation(():any => {})
                 jest.spyOn(recommendationRepository,"updateScore").mockImplementation(():any => {
@@ -147,6 +148,7 @@ describe("song tests", () => {
                         expect(err.type).toBe("not_found")
                 }
         })
+
         it("should return a random recommendation", async () => {
                 jest.spyOn(recommendationRepository, "findAll").mockImplementation(():any => {
                         return [{name : "lucas"}]
@@ -156,6 +158,7 @@ describe("song tests", () => {
 
                 expect(recommendationRepository.findAll).toBeCalled()
         })
+
         it("should get gt in getScoreByFIlter", async () => {
                 jest.spyOn(Math,"random").mockImplementation(():any => {
                         return 0.5
