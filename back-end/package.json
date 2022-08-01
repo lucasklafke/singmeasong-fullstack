@@ -8,7 +8,7 @@
     "dev": "nodemon src/server.ts",
     "prisma-test": "dotenv -e .env.test prisma migrate reset --skip-seed",
     "test": "npm run prisma-test && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i",
-    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest tests/units/song.test.ts -i --coverage"
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest song.test.ts -i --coverage"
   },
   "keywords": [],
   "author": "",

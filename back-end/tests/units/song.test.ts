@@ -1,4 +1,5 @@
 // import { faker } from "@faker-js/faker"
+import { jest } from "@jest/globals";
 import {recommendationService} from "../../src/services/recommendationsService.js"
 import {recommendationRepository} from "../../src/repositories/recommendationRepository.js"
 describe("song tests", () => {
@@ -10,6 +11,21 @@ describe("song tests", () => {
 
                 await recommendationService.insert({name, youtubeLink})
                 expect(recommendationRepository.create).toHaveBeenCalled()
+        })
+
+        it("should return conflict error when create a song", async () => {
+                jest.spyOn(recommendationRepository, "findByName").mockImplementation(():any => {
+                        return {name: "lucas"}
+                })
+                const name = "lucas"
+                const youtubeLink = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+                try{
+                        await recommendationService.insert({name, youtubeLink})
+                }catch(err){
+
+                        expect(err).toBeDefined()
+                }
         })
 
         it("should upvote a song", async ( ) => {
@@ -36,6 +52,8 @@ describe("song tests", () => {
 
         })
 
+        
+
         it("should find an error when downvote a song", async ( ) => {
                 jest.spyOn(recommendationRepository, "find").mockImplementation(():any => {
                 })
@@ -49,7 +67,7 @@ describe("song tests", () => {
                 }
         })
 
-        it("should find an error when downvote a song", async ( ) => {
+        it("should find an error when upvote a song", async ( ) => {
                 jest.spyOn(recommendationRepository, "find").mockImplementation(():any => {
                 })
                 jest.spyOn(recommendationRepository, "updateScore").mockImplementation(():any => {
@@ -109,6 +127,41 @@ describe("song tests", () => {
                 await recommendationService.getRandom()
                 expect(recommendationRepository.findAll).toBeCalled()
         })
+
+        it("should get notFoundError when get random", async () => {
+                jest.spyOn(recommendationService, "getByScore").mockImplementation(():any => {return []})
+
+                try{
+                        await recommendationService.getRandom()
+                        
+                }catch(err){
+                        expect(err).toThrowError("notFoundError")
+                }
+        })
+        it("should get gt in getScoreByFIlter", async () => {
+                jest.spyOn(Math,"random").mockImplementation(():any => {
+                        return 0.5
+                })
+                expect(recommendationService.getScoreFilter(0.5)).toEqual("gt")
+        })
+
+        it("should get gt in getScoreByFIlter", async () => {
+                jest.spyOn(Math,"random").mockImplementation(():any => {
+                        return 0.5
+                })
+                expect(recommendationService.getScoreFilter(0.9)).toEqual("lte")
+        })
+
+        it("should get an error when getByScore", async () => {
+                jest.spyOn(recommendationRepository, "findAll").mockImplementation(():any => {})
+                try{
+                        await recommendationService.getByScore("lte")
+                }catch(err){
+
+                        expect(err).toBeDefined()
+                }
+        })
+
 
         it("should find an error when getRandom to be called", async () => {
                 jest.spyOn(recommendationRepository, "findAll").mockImplementation(():any => {
